@@ -1,0 +1,22 @@
+a {
+    text-decoration: none;
+    color: #ecf0f1;
+}
+
+a:hover, a:active {
+    color: #69f0ae;
+}
+
+.header-nav {
+    padding: 0;
+    margin: 0;
+}
+
+.icon-align {
+    position: relative;
+    top: 4px;
+}
+
+.nav-caption {
+    padding: 6px;
+}
