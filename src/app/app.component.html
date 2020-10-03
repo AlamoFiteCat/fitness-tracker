@@ -1,1 +1,29 @@
-<router-outlet></router-outlet>
+<mat-sidenav-container>
+  <mat-sidenav #sidenav role="navigation"> I'm the sidenav! </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <div>
+        <button
+          class="toggle-button"
+          (click)="sidenav.toggle()"
+          mat-icon-button
+          color="accent"
+        >
+          <mat-icon>menu</mat-icon>
+        </button>
+      </div>
+      <div>
+        <a routerLink="/">Fitness Tracker</a>
+      </div>
+      <div fxFlex fxLayout fxLayoutAlign="flex-end">
+        <ul fxLayout class="header-nav" fxLayoutGap="8px">
+          <li><a class="header-nav-item" routerLink="/signup">Signup</a></li>
+          <li><a class="header-nav-item" routerLink="/login">Login</a></li>
+        </ul>
+      </div>
+    </mat-toolbar>
+    <main>
+      <router-outlet></router-outlet>
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>
