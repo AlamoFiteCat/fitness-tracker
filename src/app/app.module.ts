@@ -24,6 +24,14 @@ import { StopModalComponent } from './components/stop-modal/stop-modal.component
 import { AuthService } from './services/auth.service';
 import { TrainingService } from './services/training.service';
 
+// [Angular Firebase]
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFireDatabaseModule } from '@angular/fire/database';
+
+// [Environment]
+import { environment } from 'src/environments/environment';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -46,6 +54,9 @@ import { TrainingService } from './services/training.service';
     FlexLayoutModule,
     FormsModule,
     ReactiveFormsModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFireAuthModule,
+    AngularFireDatabaseModule,
   ],
   providers: [AuthService, TrainingService],
   bootstrap: [AppComponent],
