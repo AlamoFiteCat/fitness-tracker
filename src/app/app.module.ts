@@ -20,6 +20,10 @@ import { HeaderComponent } from './components/navigation/header/header.component
 import { SidenavListComponent } from './components/navigation/sidenav-list/sidenav-list.component';
 import { StopModalComponent } from './components/stop-modal/stop-modal.component';
 
+// [Services]
+import { AuthService } from './services/auth.service';
+import { TrainingService } from './services/training.service';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -43,7 +47,7 @@ import { StopModalComponent } from './components/stop-modal/stop-modal.component
     FormsModule,
     ReactiveFormsModule,
   ],
-  providers: [],
+  providers: [AuthService, TrainingService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
