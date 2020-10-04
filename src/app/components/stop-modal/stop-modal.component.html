@@ -1,0 +1,10 @@
+<h1 mat-dialog-title>Are you sure?</h1>
+<mat-dialog-content>
+  <h5>You already got {{ passedData?.progress }} % down!</h5>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-raised-button [mat-dialog-close]="true" color="accent">
+    Yes
+  </button>
+  <button mat-raised-button [mat-dialog-close]="false" color="warn">No</button>
+</mat-dialog-actions>
