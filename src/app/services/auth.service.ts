@@ -5,6 +5,9 @@ import { Subject } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { TrainingService } from './training.service';
 import { UiService } from '../shared/ui.service';
+import { Store } from '@ngrx/store';
+import * as fromRoot from '../ngrx/app.reducer';
+import * as UI from '../ngrx/ui.actions';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +20,8 @@ export class AuthService {
     private _router: Router,
     private _afAuth: AngularFireAuth,
     private _ts: TrainingService,
-    private _us: UiService
+    private _us: UiService,
+    private _store: Store<fromRoot.State>
   ) {}
 
   initAuthListener() {
@@ -36,30 +40,32 @@ export class AuthService {
   }
 
   registerUser(authData: AuthData) {
-    this._us.loadingStateChanged.next(true);
+    this._store.dispatch(new UI.StartLoading());
     this._afAuth
       .createUserWithEmailAndPassword(authData.email, authData.password)
       .then((res) => {
         this._us.showSnackbar('Welcome, friend!', null, 3000);
-        this._us.loadingStateChanged.next(false);
+        this._store.dispatch(new UI.StopLoading());
       })
       .catch((e) => {
         this._us.showSnackbar(e.message, null, 3000);
-        this._us.loadingStateChanged.next(false);
+        this._store.dispatch(new UI.StopLoading());
       });
   }
 
   login(authData: AuthData) {
-    this._us.loadingStateChanged.next(true);
+    this._store.dispatch(new UI.StartLoading());
     this._afAuth
       .signInWithEmailAndPassword(authData.email, authData.password)
       .then((res) => {
         this._us.showSnackbar('Welcome back!', null, 3000);
-        this._us.loadingStateChanged.next(false);
+
+        this._store.dispatch(new UI.StopLoading());
       })
       .catch((e) => {
         this._us.showSnackbar(e.message, null, 3000);
-        this._us.loadingStateChanged.next(false);
+
+        this._store.dispatch(new UI.StopLoading());
       });
   }
 

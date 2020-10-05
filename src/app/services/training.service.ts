@@ -4,12 +4,19 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { Subject, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { UiService } from '../shared/ui.service';
+import { Store } from '@ngrx/store';
+import * as fromRoot from '../ngrx/app.reducer';
+import * as UI from '../ngrx/ui.actions';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TrainingService {
-  constructor(private _af: AngularFirestore, private _us: UiService) {}
+  constructor(
+    private _af: AngularFirestore,
+    private _us: UiService,
+    private _store: Store<fromRoot.State>
+  ) {}
 
   private availableExercises: Exercise[];
   private runningExercise: Exercise;
@@ -23,7 +30,7 @@ export class TrainingService {
   fbSubscriptions: Subscription[] = [];
 
   getAvailableExercises() {
-    this._us.loadingStateChanged.next(true);
+    this._store.dispatch(new UI.StartLoading());
     this.fbSubscriptions.push(
       this._af
         .collection('availableExercises')
@@ -41,11 +48,11 @@ export class TrainingService {
           (exercises: Exercise[]) => {
             this.availableExercises = exercises;
             this.exercisesChanged.next([...this.availableExercises]);
-            this._us.loadingStateChanged.next(false);
+            this._store.dispatch(new UI.StopLoading());
           },
           (error) => {
             this.exercisesChanged.next(null);
-            this._us.loadingStateChanged.next(false);
+            this._store.dispatch(new UI.StopLoading());
             this._us.showSnackbar('Oops! Something went wrong!', null, 3000);
           }
         )

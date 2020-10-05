@@ -7,6 +7,8 @@ import { AppRoutingModule } from './modules/app-routing/app-routing.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthModule } from './modules/auth/auth.module';
+import { StoreModule } from '@ngrx/store';
+import { reducers } from './ngrx/app.reducer';
 
 // [Components]
 import { AppComponent } from './app.component';
@@ -43,6 +45,7 @@ import { environment } from 'src/environments/environment';
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireDatabaseModule,
     AuthModule,
+    StoreModule.forRoot(reducers),
   ],
   providers: [AuthService, TrainingService],
   bootstrap: [AppComponent],
