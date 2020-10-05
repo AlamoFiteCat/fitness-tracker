@@ -2,26 +2,26 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
-
+import { AuthRoutingModule } from '../../modules/auth-routing/auth-routing.module';
 // [Components]
 import { WelcomeComponent } from '../../components/welcome/welcome.component';
-import { SignupComponent } from '../../components/auth/signup/signup.component';
-import { LoginComponent } from '../../components/auth/login/login.component';
-import { TrainingComponent } from '../../components/training/training.component';
 
 // [Guards]
 import { AuthGuard } from '../../guards/auth.guard';
 
 const routes: Routes = [
   { path: '', component: WelcomeComponent },
-  { path: 'signup', component: SignupComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'training', component: TrainingComponent, canActivate: [AuthGuard] },
+  {
+    path: 'training',
+    loadChildren: () =>
+      import('../training/training.module').then((m) => m.TrainingModule),
+    canLoad: [AuthGuard],
+  },
 ];
 
 @NgModule({
   declarations: [],
-  imports: [CommonModule, RouterModule.forRoot(routes)],
+  imports: [CommonModule, RouterModule.forRoot(routes), AuthRoutingModule],
   exports: [RouterModule],
   providers: [AuthGuard],
 })

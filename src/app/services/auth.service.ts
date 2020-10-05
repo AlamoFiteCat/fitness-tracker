@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { TrainingService } from './training.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { UiService } from '../shared/ui.service';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +17,7 @@ export class AuthService {
     private _router: Router,
     private _afAuth: AngularFireAuth,
     private _ts: TrainingService,
-    private _snackbar: MatSnackBar
+    private _us: UiService
   ) {}
 
   initAuthListener() {
@@ -36,30 +36,36 @@ export class AuthService {
   }
 
   registerUser(authData: AuthData) {
+    this._us.loadingStateChanged.next(true);
     this._afAuth
       .createUserWithEmailAndPassword(authData.email, authData.password)
       .then((res) => {
-        this._snackbar.open('Welcome, friend!', null, { duration: 3000 });
+        this._us.showSnackbar('Welcome, friend!', null, 3000);
+        this._us.loadingStateChanged.next(false);
       })
       .catch((e) => {
-        this._snackbar.open(e.message, null, { duration: 3000 });
+        this._us.showSnackbar(e.message, null, 3000);
+        this._us.loadingStateChanged.next(false);
       });
   }
 
   login(authData: AuthData) {
+    this._us.loadingStateChanged.next(true);
     this._afAuth
       .signInWithEmailAndPassword(authData.email, authData.password)
       .then((res) => {
-        this._snackbar.open('Welcome back!', null, { duration: 3000 });
+        this._us.showSnackbar('Welcome back!', null, 3000);
+        this._us.loadingStateChanged.next(false);
       })
       .catch((e) => {
-        this._snackbar.open(e.message, null, { duration: 3000 });
+        this._us.showSnackbar(e.message, null, 3000);
+        this._us.loadingStateChanged.next(false);
       });
   }
 
   logout() {
     this._afAuth.signOut().then(() => {
-      this._snackbar.open('Bai!', null, { duration: 3000 });
+      this._us.showSnackbar('Bai!', null, 3000);
     });
   }
 

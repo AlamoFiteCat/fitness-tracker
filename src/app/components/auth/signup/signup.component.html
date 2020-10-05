@@ -56,8 +56,14 @@
     <mat-checkbox ngModel name="agree" required
       >I have read and agree with the Terms and Conditions</mat-checkbox
     >
-    <button mat-stroked-button [disabled]="f.invalid" color="accent">
+    <button
+      mat-stroked-button
+      [disabled]="f.invalid"
+      color="accent"
+      *ngIf="!isLoading"
+    >
       Submit
     </button>
+    <mat-spinner *ngIf="isLoading"></mat-spinner>
   </form>
 </section>

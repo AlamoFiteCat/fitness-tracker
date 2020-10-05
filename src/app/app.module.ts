@@ -6,19 +6,13 @@ import { MaterialModule } from './modules/material/material.module';
 import { AppRoutingModule } from './modules/app-routing/app-routing.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AuthModule } from './modules/auth/auth.module';
 
 // [Components]
 import { AppComponent } from './app.component';
-import { SignupComponent } from './components/auth/signup/signup.component';
-import { LoginComponent } from './components/auth/login/login.component';
-import { TrainingComponent } from './components/training/training.component';
-import { CurrentTrainingComponent } from './components/current-training/current-training.component';
-import { NewTrainingComponent } from './components/new-training/new-training.component';
-import { PastTrainingsComponent } from './components/past-trainings/past-trainings.component';
 import { WelcomeComponent } from './components/welcome/welcome.component';
 import { HeaderComponent } from './components/navigation/header/header.component';
 import { SidenavListComponent } from './components/navigation/sidenav-list/sidenav-list.component';
-import { StopModalComponent } from './components/stop-modal/stop-modal.component';
 
 // [Services]
 import { AuthService } from './services/auth.service';
@@ -26,7 +20,6 @@ import { TrainingService } from './services/training.service';
 
 // [Angular Firebase]
 import { AngularFireModule } from '@angular/fire';
-import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
 
 // [Environment]
@@ -35,16 +28,9 @@ import { environment } from 'src/environments/environment';
 @NgModule({
   declarations: [
     AppComponent,
-    SignupComponent,
-    LoginComponent,
-    TrainingComponent,
-    CurrentTrainingComponent,
-    NewTrainingComponent,
-    PastTrainingsComponent,
     WelcomeComponent,
     HeaderComponent,
     SidenavListComponent,
-    StopModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -55,8 +41,8 @@ import { environment } from 'src/environments/environment';
     FormsModule,
     ReactiveFormsModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
-    AngularFireAuthModule,
     AngularFireDatabaseModule,
+    AuthModule,
   ],
   providers: [AuthService, TrainingService],
   bootstrap: [AppComponent],

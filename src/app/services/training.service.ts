@@ -3,12 +3,13 @@ import { Exercise } from '../interfaces/exercise';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Subject, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { UiService } from '../shared/ui.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TrainingService {
-  constructor(private _af: AngularFirestore) {}
+  constructor(private _af: AngularFirestore, private _us: UiService) {}
 
   private availableExercises: Exercise[];
   private runningExercise: Exercise;
@@ -22,6 +23,7 @@ export class TrainingService {
   fbSubscriptions: Subscription[] = [];
 
   getAvailableExercises() {
+    this._us.loadingStateChanged.next(true);
     this.fbSubscriptions.push(
       this._af
         .collection('availableExercises')
@@ -39,9 +41,12 @@ export class TrainingService {
           (exercises: Exercise[]) => {
             this.availableExercises = exercises;
             this.exercisesChanged.next([...this.availableExercises]);
+            this._us.loadingStateChanged.next(false);
           },
           (error) => {
-            console.log(error);
+            this.exercisesChanged.next(null);
+            this._us.loadingStateChanged.next(false);
+            this._us.showSnackbar('Oops! Something went wrong!', null, 3000);
           }
         )
     );
@@ -58,9 +63,7 @@ export class TrainingService {
         .valueChanges()
         .subscribe(
           (exercises: Exercise[]) => {
-            exercises.map((ex) => {
-              console.log(ex);
-            });
+            exercises.map((ex) => {});
             this.finishedExercisesChanged.next(exercises);
           },
           (error) => {
