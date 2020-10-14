@@ -6,7 +6,10 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
+
+import * as fromRoot from '../../../ngrx/app.reducer';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-header',
@@ -15,14 +18,15 @@ import { Subscription } from 'rxjs';
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   @Output() sidenavToggle = new EventEmitter<void>();
-  isAuth: boolean;
+  isAuth$: Observable<boolean>;
   authSubscription: Subscription;
-  constructor(private _auth: AuthService) {}
+  constructor(
+    private _store: Store<fromRoot.State>,
+    private _auth: AuthService
+  ) {}
 
   ngOnInit(): void {
-    this.authSubscription = this._auth.authChange.subscribe((authStatus) => {
-      this.isAuth = authStatus;
-    });
+    this.isAuth$ = this._store.select(fromRoot.getIsAuth);
   }
 
   ngOnDestroy() {
